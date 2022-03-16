@@ -8,8 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.dostim.avtobor.apiResponse.ApiResponse;
 import uz.dostim.avtobor.dto.CarDto;
+import uz.dostim.avtobor.dto.CategoryDto;
 import uz.dostim.avtobor.entity.Car;
+import uz.dostim.avtobor.entity.Category;
 import uz.dostim.avtobor.service.CarService;
+import uz.dostim.avtobor.service.CategoryService;
+
+import java.util.List;
 
 
 @RestController
@@ -18,40 +23,40 @@ import uz.dostim.avtobor.service.CarService;
 public class CategoryController {
 
     @Autowired
-    CarService carService;
+    CategoryService categoryService;
 
     @PostMapping
-    @ApiOperation(value = "Create a New Car", notes = "Create a New Car for User")
-    public ResponseEntity<?> addCar(@RequestBody CarDto carDto){
-        ApiResponse apiResponse = carService.addCar(carDto);
+    @ApiOperation(value = "Create a New category", notes = "Create a New category for User")
+    public ResponseEntity<?> addCar(@RequestBody CategoryDto categoryDto){
+        ApiResponse apiResponse = categoryService.addCategory(categoryDto);
         return ResponseEntity.status(apiResponse.isSuccess() ? 200 : 400).body(apiResponse);
     }
 
     @PutMapping("/{id}")
-    @ApiOperation(value = "Edited a New Car", notes = "Edited a New Car for User")
-    public ResponseEntity<?> editCar(@RequestBody CarDto carDto, @PathVariable Long id){
-        ApiResponse apiResponse = carService.editCar(carDto, id);
+    @ApiOperation(value = "Edited a New category", notes = "Edited a New category for User")
+    public ResponseEntity<?> editCar(@RequestBody CategoryDto categoryDto, @PathVariable Long id){
+        ApiResponse apiResponse = categoryService.editCategory(categoryDto,id);
         return ResponseEntity.status(apiResponse.isSuccess() ? 200 : 400).body(apiResponse);
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get car by id", notes = "Get car by id for User")
+    @ApiOperation(value = "Get category by id", notes = "Get category by id for User")
     public ResponseEntity getById(@PathVariable Long id) {
-        ApiResponse apiResponse = carService.getById(id);
+        ApiResponse apiResponse = categoryService.getCategoryById(id);
         return ResponseEntity.status(apiResponse.isSuccess() ? 200 : 400).body(apiResponse);
     }
 
     @GetMapping
-    @ApiOperation(value = "Get car page", notes = "Get car page for User")
-    public ResponseEntity<Page<Car>> getCarPage(@RequestParam int page) {
-        Page<Car> carPage = carService.getCarList(page);
-        return ResponseEntity.ok(carPage);
+    @ApiOperation(value = "Get category list", notes = "Get category for User")
+    public ResponseEntity<List<Category>> getCarPage() {
+        List<Category> categoryList = categoryService.getCategoryList();
+        return ResponseEntity.ok(categoryList);
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete car by id", notes = "Delete car by id for User")
+    @ApiOperation(value = "Delete category by id", notes = "Delete category by id for User")
     public ResponseEntity deleteById(@PathVariable Long id) {
-        ApiResponse apiResponse = carService.deleteCarById(id);
+        ApiResponse apiResponse = categoryService.deleteCategoryById(id);
         return ResponseEntity.status(apiResponse.isSuccess() ? 200 : 409).body(apiResponse);
     }
 

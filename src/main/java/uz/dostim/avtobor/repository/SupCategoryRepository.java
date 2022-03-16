@@ -5,4 +5,5 @@ import uz.dostim.avtobor.entity.Brand;
 import uz.dostim.avtobor.entity.SupCategory;
 
 public interface SupCategoryRepository extends JpaRepository<SupCategory, Long> {
+    boolean existsByName(String name);
 }

@@ -18,6 +18,7 @@ import uz.dostim.avtobor.repository.CarRepository;
 import uz.dostim.avtobor.repository.CategoryRepository;
 import uz.dostim.avtobor.repository.ProfileRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,6 +58,30 @@ public class CategoryService {
         category.setName(categoryDto.getName());
         categoryRepository.save(category);
         return new ApiResponse("Successfully edited",true);
+    }
+
+    public ApiResponse getCategoryById(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            return new ApiResponse("Not found category",false);
+        }
+
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        if (optionalCategory.isPresent()) {
+            return new ApiResponse(optionalCategory.get());
+        }else
+            return new ApiResponse("Conflict with database",false);
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryRepository.findAll();
+    }
+
+    public ApiResponse deleteCategoryById(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            return new ApiResponse("Not found category",false);
+        }
+        categoryRepository.deleteById(id);
+        return new ApiResponse("Successfully deleted",true);
     }
 
 }
