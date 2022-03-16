@@ -14,6 +14,8 @@ import java.util.List;
 public class SupCategory extends BaseEntity{
 
     @OneToMany
-    List<Category> categoryList;
+    private List<Category> categoryList;
+
+
 
 }

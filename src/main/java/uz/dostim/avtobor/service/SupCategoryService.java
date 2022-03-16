@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import uz.dostim.avtobor.apiResponse.ApiResponse;
 import uz.dostim.avtobor.dto.CarDto;
 import uz.dostim.avtobor.dto.SupCategoryDto;
-import uz.dostim.avtobor.entity.Brand;
-import uz.dostim.avtobor.entity.Car;
-import uz.dostim.avtobor.entity.ProfileEntity;
-import uz.dostim.avtobor.entity.SupCategory;
+import uz.dostim.avtobor.entity.*;
 import uz.dostim.avtobor.repository.*;
 
 import java.util.LinkedList;
@@ -58,7 +55,10 @@ public class SupCategoryService {
        }
 
        Optional<SupCategory> optionalSupCategory = supCategoryRepository.findById(id);
-       return new ApiResponse(optionalSupCategory.get());
+       SupCategory supCategory = optionalSupCategory.get();
+       List<Category> categoryList = categoryRepository.findAllBySupCategory_Id(supCategory.getId());
+
+       return new ApiResponse(categoryList);
    }
 
    public List<SupCategory> getSupCategoryList() {
