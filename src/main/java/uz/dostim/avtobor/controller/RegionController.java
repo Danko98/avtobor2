@@ -13,8 +13,8 @@ import uz.dostim.avtobor.service.CarService;
 
 
 @RestController
-@RequestMapping("car/")
-@Api(tags = "Profile Control", value = "Bu Controllerni faqat ADMIN aka ishlata oladi")
+@RequestMapping("region/")
+@Api(tags = "Region Control", value = "Bu Controllerni faqat ADMIN aka ishlata oladi")
 public class RegionController {
 
     @Autowired

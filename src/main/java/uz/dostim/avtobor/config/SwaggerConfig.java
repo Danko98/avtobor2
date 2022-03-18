@@ -2,7 +2,13 @@ package uz.dostim.avtobor.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
@@ -15,31 +21,26 @@ import java.util.Set;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+@EnableWebMvc
+
+@Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
+public class SwaggerConfig extends WebMvcConfigurerAdapter {
     @Bean
-    public Docket swaggerConfiguration() {
-
-        Set<String> consumes = new HashSet<>();
-        consumes.add(MediaType.APPLICATION_JSON_VALUE);
-
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .consumes(consumes)
-                .produces(consumes)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("uz.dostim"))
-                .build()
-                .apiInfo(apiDetails());
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
     }
 
-    private ApiInfo apiDetails() {
-        return new ApiInfo("My Super Project Name",
-                "Api documentation for project name.",
-                "1.0",
-                "Beast team.",
-                new springfox.documentation.service.Contact("", "", ""),
-                "",
-                "",
-                Collections.emptyList()
-        );
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        System.out.println("******************************Configuring swagger resource handler");
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }

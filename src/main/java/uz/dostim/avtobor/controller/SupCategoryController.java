@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("car/")
+@RequestMapping("sup-category/")
 @Api(tags = "Super Category Control", value = "Bu Controllerni faqat ADMIN aka ishlata oladi")
 public class SupCategoryController {
 

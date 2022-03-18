@@ -13,7 +13,7 @@ import uz.dostim.avtobor.service.CarService;
 
 
 @RestController
-@RequestMapping("car/")
+@RequestMapping("user/")
 @Api(tags = "Profile Control", value = "Bu Controllerni faqat ADMIN aka ishlata oladi")
 public class UserController {
 
