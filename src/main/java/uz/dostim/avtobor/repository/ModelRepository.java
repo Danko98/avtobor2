@@ -9,5 +9,6 @@ import java.util.List;
 public interface ModelRepository extends JpaRepository<Model, Long> {
 
     List<Model> findAllByBrand_Id(Long brand_id);
+    boolean existsByName(String name);
 
 }

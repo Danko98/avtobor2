@@ -5,4 +5,6 @@ import uz.dostim.avtobor.entity.Brand;
 import uz.dostim.avtobor.entity.Region;
 
 public interface RegionRepository extends JpaRepository<Region, Long> {
+
+    boolean existsByName(String name);
 }

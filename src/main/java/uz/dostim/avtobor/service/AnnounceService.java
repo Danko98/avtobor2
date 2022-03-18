@@ -67,8 +67,8 @@ public class AnnounceService {
 
     public Page<Announce> getAnnouncePage(int page) {
         Pageable pageable = PageRequest.of(page, 30);
-        Page<Announce> announcePage = announceRepository.findAll(pageable);
-        return announcePage;
+        Page<Announce> allByActive = announceRepository.findAllByActive(true, pageable);
+        return allByActive;
     }
 
     public ApiResponse deleteById(Long id) {

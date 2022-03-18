@@ -18,4 +18,7 @@ public class Announce extends BaseEntity{
 
     @OneToOne
     private Car car;
+
+
+    private boolean isActive;
 }

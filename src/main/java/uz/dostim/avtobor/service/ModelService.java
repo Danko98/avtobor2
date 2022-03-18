@@ -1,123 +1,79 @@
 package uz.dostim.avtobor.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.dostim.avtobor.apiResponse.ApiResponse;
-import uz.dostim.avtobor.dto.CarDto;
-import uz.dostim.avtobor.entity.Brand;
-import uz.dostim.avtobor.entity.Car;
-import uz.dostim.avtobor.repository.BrandRepository;
-import uz.dostim.avtobor.repository.CarRepository;
+import uz.dostim.avtobor.dto.ModelDto;
 
+import uz.dostim.avtobor.entity.Model;
+import uz.dostim.avtobor.repository.BrandRepository;
+import uz.dostim.avtobor.repository.ModelRepository;
+
+import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class ModelService {
 
     @Autowired
-    CarRepository carRepository;
+    private BrandRepository brandRepository;
 
     @Autowired
-    BrandRepository brandRepository;
+    private ModelRepository modelRepository;
 
-    @Autowired
-    UserRepository userRepository;
 
-    public ApiResponse addCar(CarDto carDto){
-
-        if (!brandRepository.existsById(carDto.getBrandId())){
-            return new ApiResponse("Not found brand",false);
+    public ApiResponse addModel(ModelDto modelDto) {
+        if (modelRepository.existsByName(modelDto.getName())) {
+            return new ApiResponse("This alredy exists",false);
         }
 
-        if (!userRepository.existsById(carDto.getUserId())) {
-            return new ApiResponse("Not found user",false);
-        }
-
-        Optional<Brand> optionalBrand = brandRepository.findById(carDto.getBrandId());
-        Optional<User> optionalUser = userRepository.findById(carDto.getUserId());
-
-        Car car = new Car();
-        car.setAgreement(carDto.isAgreement());
-        car.setAutomatic(carDto.isAutomatic());
-        car.setBrand(optionalBrand.get());
-        car.setUser(optionalUser.get());
-        car.setColor(carDto.getColor());
-        car.setDescription(carDto.getDescription());
-        car.setEnergy(carDto.getEnergy());
-        car.setPrice(carDto.getPrice());
-        car.setVersion(carDto.getVersion());
-        car.setWalking(carDto.getWalking());
-        car.setYears(carDto.getYears());
-        car.setCreateAt(carDto.getCreatedDate());
-
-        carRepository.save(car);
-
+        Model model = new Model();
+        model.setName(modelDto.getName());
+        modelRepository.save(model);
         return new ApiResponse("Successfully saved",true);
+
     }
 
-    public ApiResponse editCar(CarDto carDto, Long id){
-
-        if (!carRepository.existsById(id)) {
+    public ApiResponse editModel(ModelDto modelDto, Long id) {
+        if (!modelRepository.existsById(id)) {
             return new ApiResponse("Not found",false);
         }
 
-        if (!brandRepository.existsById(carDto.getBrandId())){
-            return new ApiResponse("Not found brand",false);
+        if (modelRepository.existsByName(modelDto.getName())) {
+            return new ApiResponse("This alredy exists",false);
         }
 
-        if (!userRepository.existsById(carDto.getUserId())) {
-            return new ApiResponse("Not found user",false);
-        }
-
-        Optional<Brand> optionalBrand = brandRepository.findById(carDto.getBrandId());
-        Optional<User> optionalUser = userRepository.findById(carDto.getUserId());
-        Optional<Car> optionalCar = carRepository.findById(id);
-
-        Car car = optionalCar.get();
-        car.setAgreement(carDto.isAgreement());
-        car.setAutomatic(carDto.isAutomatic());
-        car.setBrand(optionalBrand.get());
-        car.setUser(optionalUser.get());
-        car.setColor(carDto.getColor());
-        car.setDescription(carDto.getDescription());
-        car.setEnergy(carDto.getEnergy());
-        car.setPrice(carDto.getPrice());
-        car.setVersion(carDto.getVersion());
-        car.setWalking(carDto.getWalking());
-        car.setYears(carDto.getYears());
-        car.setCreateAt(carDto.getCreatedDate());
-
-        carRepository.save(car);
-
+        Model model = new Model();
+        model.setName(modelDto.getName());
+        modelRepository.save(model);
         return new ApiResponse("Successfully edited",true);
+
     }
 
-    public ApiResponse getById(Long id) {
-        if (!carRepository.existsById(id)) {
-            return new ApiResponse("Not found car",false);
+    public ApiResponse getModelById(Long id) {
+        if (!modelRepository.existsById(id)) {
+            return new ApiResponse("Not found",false);
         }
-        Optional<Car> optionalCar = carRepository.findById(id);
-        return new ApiResponse(optionalCar.get());
+
+        Optional<Model> optionalModel = modelRepository.findById(id);
+        if (optionalModel.isPresent()) {
+            return new ApiResponse(optionalModel.get());
+        }else
+            return new ApiResponse("Not found",false);
     }
 
-    public Page<Car> getCarList(int page) {
-        Pageable pageable = PageRequest.of(page, 20);
-        Page<Car> carPage = carRepository.findAll(pageable);
-        return carPage;
+    public List<Model> getModelList() {
+        return modelRepository.findAll();
     }
 
-    public ApiResponse deleteCarById(Long id) {
-        if (!carRepository.existsById(id)){
-            return new ApiResponse("Not found car",false);
+    public ApiResponse deleteBYId(Long id) {
+        if (!modelRepository.existsById(id)) {
+            return new ApiResponse("Not found",false);
         }
-        carRepository.deleteById(id);
-        return new ApiResponse("Successfully deleted", true);
+        modelRepository.deleteById(id);
+        return new ApiResponse("Successfully deleted",true);
     }
-
 
 
 }
